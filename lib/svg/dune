@@ -1,0 +1,3 @@
+(library
+ (name svg)
+ (libraries core xmlm))

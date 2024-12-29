@@ -1,0 +1,8 @@
+profile = conventional
+margin = 80
+exp-grouping = preserve
+doc-comments = before
+match-indent = 2
+break-separators = after
+space-around-lists = false
+dock-collection-brackets = true
