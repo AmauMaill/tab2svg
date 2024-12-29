@@ -1,5 +1,10 @@
 (library
  (name parser)
- (libraries core)
+ (public_name tab2svg.parser)
+ (libraries 
+  core
+  alcotest)
  (preprocess (pps ppx_inline_test))
+ (modules Tab_types Lexer Parser)
+ (wrapped false)
  (inline_tests))
