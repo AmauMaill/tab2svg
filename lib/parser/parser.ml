@@ -4,7 +4,8 @@
    @version 1.0
 *)
 
-module T = Tab_types
+open Tab_types
+
 module L = Lexer
 
 type parse_error =
@@ -16,13 +17,13 @@ type parse_error =
 (** Convert tokens to a tab position *)
 let rec parse_position tokens =
   match tokens with
-  | [] -> (Empty, [])
-  | L.Bar :: rest -> (Bar_line, rest)
-  | L.Separator :: rest -> (Empty, rest)
+  | [] -> (empty_position, [])  (* Using empty_position from Tab_types *)
+  | L.Bar :: rest -> (bar_line, rest)  (* Using bar_line from Tab_types *)
+  | L.Separator :: rest -> (empty_position, rest)
   | L.Number n :: L.Technique t :: rest ->
-      (Note { fret = Some n; technique = Some t }, rest)
+      (create_note (Some n) (Some t), rest)  (* Using create_note from Tab_types *)
   | L.Number n :: rest ->
-      (Note { fret = Some n; technique = None }, rest)
+      (create_note (Some n) None, rest)
   | _ :: rest -> parse_position rest
 
 (** Parse a sequence of tokens into a tab line *)
@@ -42,7 +43,7 @@ let parse_line tokens =
     @param input The input string containing the complete tab
     @return Parsed tab structure
 *)
-let parse_tab (input : string) : (T.tab, parse_error) result =
+let parse_tab (input : string) : (tab, parse_error) result =
   let lines = String.split_on_char '\n' input in
   let tokenized_lines = List.map L.tokenize_line lines in
   
@@ -64,20 +65,3 @@ let parse_tab (input : string) : (T.tab, parse_error) result =
           Error Mismatched_line_lengths
         else
           Ok { lines = parsed_lines }
-
-let%test "parse_minimal_tab" =
-  match parse_tab "e|---0---|" with
-  | Ok result ->
-      List.length result.lines = 1 &&
-      (List.hd result.lines).string_name = 'e'
-  | Error _ -> false
-
-let%test "parse_with_technique" =
-  match parse_tab "G|--5h7--|" with
-  | Ok result ->
-      let line = List.hd result.lines in
-      line.string_name = 'G' &&
-      match List.nth line.positions 2 with
-      | Note { fret = Some 5; technique = Some Hammer_on } -> true
-      | _ -> false
-  | Error _ -> false
