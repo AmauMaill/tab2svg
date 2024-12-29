@@ -5,7 +5,7 @@
    @version 1.0
 *)
 
-open Tab_types
+open Tab2svg_types.Tab
 
 (** Token represents the different elements in a tab line *)
 type token =

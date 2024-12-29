@@ -4,7 +4,7 @@
    @version 1.0
 *)
 
-open Tab_types
+open Tab2svg_types.Tab
 
 module L = Lexer
 

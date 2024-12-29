@@ -1,0 +1,7 @@
+(library
+ (name tab2svg)
+ (public_name tab2svg)
+ (libraries 
+  tab2svg_types
+  tab2svg_parser
+  tab2svg_svg))

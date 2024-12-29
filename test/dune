@@ -1,6 +1,25 @@
-(test
- (name parser_test)
- (libraries
-  alcotest
-  parser)
- (package tab2svg))
+(library
+  (name tab2svg_test)
+  (public_name tab2svg.test)
+  (libraries 
+    tab2svg.types
+    tab2svg.parser
+    tab2svg.svg
+    alcotest
+    str)
+  (modules
+    tab2svg_test
+    lexer_test
+    parser_test
+    renderer_test))
+
+(executable
+  (name run_tests)
+  (modules run_tests)
+  (libraries 
+    tab2svg_test
+    alcotest))
+
+(rule
+  (alias runtest)
+  (action (run %{exe:run_tests.exe})))
